@@ -1,0 +1,617 @@
+<!-- wp:html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Slider</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        
+        /* Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background-color: #000;
+            color: #eee;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            overflow-x: hidden;
+        }
+
+        /* Main Slider Container */
+        .slider {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Main Slides */
+        .slider .mainslides .block {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .slider .mainslides .block img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider .mainslides .block .content {
+            position: absolute;
+            top: 50%;
+            width: 80%;
+            max-width: 1140px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding-right: 25%;
+            color: #fff;
+            text-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .slider .mainslides .block .title {
+            font-size: 5em;
+            font-weight: bold;
+            line-height: 1.3em;
+        }
+
+        .description {
+            font-size: 16px !important;
+            margin-top: 18px;
+            width: 70%;
+        }
+
+        /* Thumbnails */
+        .cards {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+            z-index: 100;
+            display: flex;
+            gap: 20px;
+        }
+
+        .cards .block {
+            width: 200px;
+            height: 293px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .cards .block img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 2px solid white;
+            transition: transform 0.3s ease;
+        }
+
+        .cards .block:hover img {
+            transform: scale(1.05);
+        }
+
+        .cards .block::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: background 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .cards .block:hover::before {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cards .block .content {
+            color: #fff;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            text-align: center;
+        }
+
+        .cards .block .content .title {
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        .cards .buttons button {
+            margin-top: 4%;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .cards .buttons button:hover {
+            color: white;
+            background-color: #333;
+            transform: translateY(-2px);
+        }
+
+        /* Navigation Controls */
+        .nav {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: none;
+            color: #000;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav button:hover {
+            background-color: #eee;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Progress Indicator */
+        .progress-bar {
+            position: absolute;
+            z-index: 1000;
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            left: 0;
+            top: 0;
+            overflow: hidden;
+        }
+
+        .progress-bar .time {
+            position: absolute;
+            height: 100%;
+            background-color: #f1683a;
+            width: 0;
+            transition: width linear;
+        }
+
+        /* Animations */
+        .slider .mainslides .block:nth-child(1) {
+            z-index: 1;
+        }
+
+        .slider .mainslides .block:nth-child(1) .content .title,
+        .slider .mainslides .block:nth-child(1) .content .description {
+            transform: translateY(50px);
+            filter: blur(20px);
+            opacity: 0;
+            animation: showContent .5s 1s linear 1 forwards;
+        }
+
+        @keyframes showContent {
+            to {
+                transform: translateY(0px);
+                filter: blur(0px);
+                opacity: 1;
+            }
+        }
+
+        .slider .mainslides .block:nth-child(1) .content .title {
+            animation-delay: 1.2s !important;
+        }
+
+        .slider .mainslides .block:nth-child(1) .content .description {
+            animation-delay: 1.6s !important;
+        }
+
+        /* Next Animation */
+        .slider.next .mainslides .block:nth-child(1) img {
+            width: 200px;
+            height: 293px;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            border-radius: 30px;
+            animation: showImage .5s linear 1 forwards;
+            border: 2px solid white;
+        }
+
+        @keyframes showImage {
+            to {
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                border: none;
+            }
+        }
+
+        .slider.next .cards .block:nth-last-child(1) {
+            overflow: hidden;
+            animation: showThumbnail .5s linear 1 forwards;
+        }
+
+        @keyframes showThumbnail {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+        }
+
+        /* Prev Animation */
+        .slider.prev .mainslides .block:nth-child(2) {
+            z-index: 2;
+        }
+
+        .slider.prev .mainslides .block:nth-child(2) img {
+            animation: outFrame 0.5s linear 1 forwards;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        @keyframes outFrame {
+            to {
+                width: 200px;
+                height: 293px;
+                bottom: 50px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 20px;
+                border: 2px solid white;
+            }
+        }
+
+        .slider.prev .cards .block:nth-child(1) {
+            overflow: hidden;
+            opacity: 0;
+            animation: showThumbnail .5s linear 1 forwards;
+        }
+
+        /* Disable buttons during animation */
+        .slider.next .nav button,
+        .slider.prev .nav button {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .slider.prev .mainslides .block:nth-child(2) .content .title,
+        .slider.prev .mainslides .block:nth-child(2) .content .description {
+            animation: contentOut 1.5s linear 1 forwards !important;
+        }
+
+        @keyframes contentOut {
+            to {
+                transform: translateY(-150px);
+                filter: blur(20px);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1200px) {
+            .slider .mainslides .block .title {
+                font-size: 4em;
+            }
+        }
+
+        @media screen and (max-width: 992px) {
+            .slider .mainslides .block .content {
+                padding-right: 15%;
+            }
+            
+            .slider .mainslides .block .title {
+                font-size: 3em;
+            }
+            
+            .cards .block {
+                width: 180px;
+                height: 260px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .slider .mainslides .block .content {
+                padding-right: 0;
+                text-align: center;
+            }
+            
+            .slider .mainslides .block .title {
+                font-size: 2.5em;
+            }
+            
+            .description {
+                width: 90% !important;
+                margin: 18px auto;
+            }
+            
+            .nav {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 150px;
+            }
+            
+            .cards {
+                bottom: 30px;
+            }
+            
+            .cards .block {
+                width: 130px;
+                height: 200px;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .cards {
+                gap: 10px;
+            }
+            
+            .cards .block {
+                width: 100px;
+                height: 150px;
+            }
+            
+            .cards .block .content .title {
+                font-size: 14px;
+            }
+            
+            .cards .buttons button {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            
+            .nav button {
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- slider -->
+    <div class="slider">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="time"></div>
+        </div>
+        
+        <!-- Main Slides -->
+        <div class="mainslides">
+            <div class="block">
+                <img src="http://localhost/qib/wp-content/uploads/2025/04/slider-1onnn.jpg" alt="Majestic Tiger">
+                <div class="content">
+                    <div class="title">Majestic Tiger</div>
+                    <div class="description">
+                       The king of the jungle, known for its strength, power, and beauty. Tigers are one of the most fearsome predators on Earth.
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <img src="http://localhost/qib/wp-content/uploads/2025/04/slider-2o.jpg" alt="Wise Owl">
+                <div class="content">
+                    <div class="title">Wise Owl</div>
+                    <div class="description">
+                        Symbolizing wisdom and mystery, owls are nocturnal creatures with exceptional vision even in dark and silent flight.
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <img src="http://localhost/qib/wp-content/uploads/2025/04/slider-3on.jpg" alt="Shy Chameleon">
+                <div class="content">
+                    <div class="title">Shy Chameleon</div>
+                    <div class="description">
+                        Famous for their color-changing ability, chameleons adapt to their surroundings with unique camouflage techniques.
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <img src="http://localhost/qib/wp-content/uploads/2025/04/slider-4onn.jpg" alt="Wild Bear">
+                <div class="content">
+                    <div class="title">Wild Bear</div>
+                    <div class="description">
+                       The titan of the wild, known for its strength, power, and dominance. Bears are among the most formidable predators on Earth.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Thumbnail Navigation -->
+        <div class="cards">
+            <div class="block">
+                <img src="http://localhost/qib/wp-content/uploads/2025/04/slider-1onnn.jpg" alt="Tiger Thumbnail">
+                <div class="content">
+                    <div class="title">Tiger</div>
+                    <div class="buttons">
+                        <button>SEE MORE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <img src="http://localhost/qib/wp-content/uploads/2025/04/slider-2o.jpg" alt="Owl Thumbnail">
+                <div class="content">
+                    <div class="title">Owl</div>
+                    <div class="buttons">
+                        <button>SEE MORE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <img src="http://localhost/qib/wp-content/uploads/2025/04/slider-3on.jpg" alt="Chameleon Thumbnail">
+                <div class="content">
+                    <div class="title">Chameleon</div>
+                    <div class="buttons">
+                        <button>SEE MORE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <img src="http://localhost/qib/wp-content/uploads/2025/04/slider-4onn.jpg" alt="Bear Thumbnail">
+                <div class="content">
+                    <div class="title">Bear</div>
+                    <div class="buttons">
+                        <button>SEE MORE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Controls -->
+        <div class="nav">
+            <button id="prev">&lt;</button>
+            <button id="next">&gt;</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const nextBtn = document.getElementById('next');
+            const prevBtn = document.getElementById('prev');
+            const slider = document.querySelector('.slider');
+            const mainSlides = slider.querySelector('.mainslides');
+            const thumbnailContainer = document.querySelector('.cards');
+            const thumbnailItems = thumbnailContainer.querySelectorAll('.block');
+            const progressBar = document.querySelector('.progress-bar .time');
+            
+            // Configuration
+            const timeRunning = 3000; // Animation duration
+            const timeAutoNext = 7000; // Auto slide duration
+            
+            // Initialize thumbnails
+            thumbnailContainer.appendChild(thumbnailItems[0].cloneNode(true));
+            
+            // Variables for timeouts
+            let runTimeOut;
+            let runNextAuto;
+            
+            // Start the progress bar animation
+            function startProgressBar() {
+                if (progressBar) {
+                    progressBar.style.width = '0%';
+                    progressBar.style.transition = `width ${timeAutoNext}ms linear`;
+                    setTimeout(() => {
+                        progressBar.style.width = '100%';
+                    }, 50);
+                }
+            }
+            
+            // Show slider function
+            function showSlider(type) {
+                // Get current slides and thumbnails
+                const sliderItems = mainSlides.querySelectorAll('.block');
+                const currentThumbnails = thumbnailContainer.querySelectorAll('.block');
+                
+                // Apply transition based on direction
+                if (type === 'next') {
+                    mainSlides.appendChild(sliderItems[0]);
+                    thumbnailContainer.appendChild(currentThumbnails[0]);
+                    slider.classList.add('next');
+                } else {
+                    mainSlides.prepend(sliderItems[sliderItems.length - 1]);
+                    thumbnailContainer.prepend(currentThumbnails[currentThumbnails.length - 1]);
+                    slider.classList.add('prev');
+                }
+                
+                // Reset progress bar
+                startProgressBar();
+                
+                // Clear animation classes after transition
+                clearTimeout(runTimeOut);
+                runTimeOut = setTimeout(() => {
+                    slider.classList.remove('next');
+                    slider.classList.remove('prev');
+                }, timeRunning);
+                
+                // Reset auto slide timer
+                clearTimeout(runNextAuto);
+                runNextAuto = setTimeout(() => {
+                    nextBtn.click();
+                }, timeAutoNext);
+            }
+            
+            // Event listeners
+            nextBtn.addEventListener('click', () => showSlider('next'));
+            prevBtn.addEventListener('click', () => showSlider('prev'));
+            
+            // Make thumbnails clickable to jump to that slide
+            thumbnailContainer.querySelectorAll('.block').forEach((thumb, index) => {
+                thumb.addEventListener('click', () => {
+                    // Calculate how many times to click next to get to this slide
+                    const currentSlide = mainSlides.querySelector('.block:first-child');
+                    const currentIndex = Array.from(mainSlides.querySelectorAll('.block')).indexOf(currentSlide);
+                    const clicksNeeded = (index - currentIndex + 4) % 4; // Ensure positive modulo
+                    
+                    // Simulate the clicks
+                    for (let i = 0; i < clicksNeeded; i++) {
+                        setTimeout(() => {
+                            nextBtn.click();
+                        }, i * timeRunning);
+                    }
+                });
+            });
+            
+            // SEE MORE button functionality
+            document.querySelectorAll('.cards .buttons button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent triggering the thumbnail click
+                    const cardBlock = e.target.closest('.block');
+                    const index = Array.from(thumbnailContainer.querySelectorAll('.block')).indexOf(cardBlock);
+                    alert(`You clicked SEE MORE for slide ${index + 1}`);
+                    // You can replace this with actual navigation or modal logic
+                });
+            });
+            
+            // Start the slider
+            startProgressBar();
+            runNextAuto = setTimeout(() => {
+                nextBtn.click();
+            }, timeAutoNext);
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
