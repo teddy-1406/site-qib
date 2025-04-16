@@ -1,0 +1,94 @@
+
+/*CSS para carrossel infinito */
+/*Inicio Css Infinito*/
+
+selector .swiper-container{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+selector .swiper-wrapper{
+    display: flex;
+    animation: infiniteSlide 15s linear infinite;
+}
+@keyframes infiniteSlide {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+/*Fim Css Infinito*/
+
+
+
+/*CSS para carrossel com Desfoque. Não usar junto com CSS  acima*/
+
+/*Inicio Css com Desfoque*/
+
+/*
+classes slides
+swiper-slide-prev
+swiper-slide-active
+swiper-slide-next
+
+classes setas nav
+elementor-swiper-button-prev
+elementor-swiper-button-next
+fim comentario*/
+
+selector .swiper-slide{
+    transform: scale(0.97);
+}
+
+selector .swiper-slide:hover{
+    transform: scale(1);
+    transition: 1s;
+}
+
+selector .swiper-slide-active:hover{
+    transform: scale(1);
+    transition: 1s;
+}
+
+selector .swiper-slide-prev{
+    transition: 1s;
+    filter: opacity(25%);
+}
+
+selector .swiper-slide-next ~ .swiper-slide ~ .swiper-slide ~ .swiper-slide ~ .swiper-slide{
+    transition: 1s;
+    filter: opacity(25%);
+}
+
+/*Ajustes Tablet*/
+@media(min-width: 767px) and (max-width: 1023px){
+selector .swiper-slide-next ~ .swiper-slide ~ .swiper-slide{
+    transition: 1s;
+    filter: opacity(25%);
+}
+ 
+}
+
+/*Ajustes Mobile*/
+@media(max-width: 766px){
+selector .swiper-slide-prev{
+    transition: 1s;
+    filter: opacity(25%);
+    transform: scale(0.97);
+}
+
+selector .swiper-slide-active{
+    transition: 1s;
+    transform: scale(1);
+}
+
+selector .swiper-slide-next{
+    transition: 1s;
+    filter: opacity(25%);
+    transform: scale(0.97);
+}
+}
+
+/*Fim Css com Desfoque*/

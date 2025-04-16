@@ -1,0 +1,58 @@
+- Abaixo do banner colocar apresentação da igreja
+- Seccionar as informações? colocar num container/retangulo informações relacionadas da seções do site
+
+
+
+azul logo - #0067B8
+azul marinho botao - #122742 #0B3B61
+dourado/mostada - #CA932E  #F8CB32  #E8B729
+azul botao secundario - #446B97
+cinza - #EBEBEB
+
+- Menu
+Quem Somos
+Mensagens
+Ministérios
+Agenda
+Contribua
+Contato
+
+Pesquisa
+
+1024
+830 x 670
+81% x 
+      530
+      79%
+	  265
+	  
+botao 225 X 82
+
+
+Plugin Blog Ultimate Post kit
+Plugin pra depoimentos - widget de revisao do google
+
+wordpress
+xCGl>6i*M;
+
+
+app-banner
+banner ng-star-inserted
+
+elementor-swiper
+
+cards
+https://www.youtube.com/watch?v=QjD-fjexQkM
+https://www.youtube.com/watch?v=OTEM71Q1HXI
+lordicon
+
+testemunho
+https://www.youtube.com/watch?v=RwS0yUHxf8I
+https://www.youtube.com/watch?v=Ai0eStovaXA
+
+blog
+post grid
+https://www.youtube.com/watch?v=eb1prBAP1bw
+
+slide
+https://www.youtube.com/watch?v=H0nRDMvwJQQ
